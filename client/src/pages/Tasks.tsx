@@ -1,7 +1,14 @@
 import {AddTaskModal} from '@/components/module/tasks/AddTaskModal';
+import TaskCard from '@/components/module/tasks/TasksCard';
 import {Tabs, TabsList, TabsTrigger} from '@/components/ui/tabs';
-
+import {useGetTasksQuery} from '@/redux/api/baseApi';
+import type {ITask} from '@/types';
 export default function Tasks() {
+    const {data, isLoading} = useGetTasksQuery(undefined);
+    if (isLoading) {
+        return <p>Loading</p>;
+    }
+    console.log({isLoading, data});
     return (
         <div className='mx-auto max-w-7xl px-5 mt-20'>
             <div className='flex justify-end items-center gap-5'>
@@ -37,9 +44,10 @@ export default function Tasks() {
                 <AddTaskModal />
             </div>
             <div className='space-y-5 mt-5'>
-                {/* {tasks.map((task) => (
-                    <TaskCard task={task} key={task.id} />
-                ))} */}
+                {!isLoading &&
+                    data?.tasks?.map((task: ITask) => (
+                        <TaskCard task={task} key={task.id} />
+                    ))}
             </div>
         </div>
     );

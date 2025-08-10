@@ -26,7 +26,7 @@ export default function TaskCard({task}: IProps) {
                             'line-through': task.isCompleted,
                         })}
                     >
-                        {task.title}
+                        {task.title} Title
                     </h1>
                 </div>
                 <div className='flex gap-3 items-center'>

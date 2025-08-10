@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/select';
 import {Textarea} from '@/components/ui/textarea';
 import {cn} from '@/lib/utils';
+import {useCreateTaskMutation} from '@/redux/api/baseApi';
 import {format} from 'date-fns';
 
 import {CalendarIcon} from 'lucide-react';
@@ -37,10 +38,19 @@ import {useForm, type FieldValues, type SubmitHandler} from 'react-hook-form';
 export function AddTaskModal() {
     const [open, setOpen] = useState(false);
     const form = useForm();
-    const onSubmit: SubmitHandler<FieldValues> = () => {
+
+    const [createTask] = useCreateTaskMutation();
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        console.log(data);
+        const taskData = {
+            ...data,
+            isCompleted: false,
+        };
         // dispatch(addTask(data as ITask));
-        // setOpen(false);
-        // form.reset();
+        const res = await createTask(taskData).unwrap();
+        console.log(res);
+        setOpen(false);
+        form.reset();
     };
     return (
         <Dialog open={open} onOpenChange={setOpen}>
